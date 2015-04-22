@@ -33,6 +33,7 @@ Get best conversions with this plugin, increasing your profits with the same tra
  Minor updates
  Screenshots
  Uninstall deletes data
+ Translations
 
 = 0.2 =
  Minor updates
