@@ -1,33 +1,22 @@
-    * { margin: 0; padding: 0; }
-        
+* { margin: 0; padding: 0; }
 .tabs { list-style: none; }
 .tabs li { display: inline; }
 .tabs li a { color: black; float: left; display: block; padding: 4px 10px; margin-left: -1px; position: relative; left: 1px; background: white; text-decoration: none; }
 .tabs li a:hover { background: #ccc; }
-
-
 /* Generic styles & example one */        
 .tabbed-area { margin: 0 0 120px 0; }
 .box-wrap { position: relative; min-height: 250px; }
-.tabbed-area div div { background: white;     position: absolute; top: -1px; left: 0; width: 80%; }
- 
+.tabbed-area div div { background: white; position: absolute; top: -1px; left: 0; width: 90%; }
 .tabbed-area div div, .tabs li a { border: 1px solid #ccc; }
-#box-one:target, #box-two:target, #box-three:target { z-index: 1; }
-.tab-content{ padding-left:10px;padding-top: 10px;min-height: 350px; }
-
-/* Stuff for example two */
+.tab-content{ padding-left: 10px; padding-top: 10px; min-height: 350px; }
 .cur-nav-fix { margin-top: 60px; }
 .cur-nav-fix .tabs { position: absolute; bottom: 100%; left: -1px; }
 .cur-nav-fix .tabs li a { background: -moz-linear-gradient(top, white, #eee); }
- #box-acount:{z-index: 1};
-#box-acount:target .tabs,
-#box-four:target .tabs,
-#box-five:target .tabs,
-#box-six:target .tabs { z-index: 3; }
-#box-four:target, #box-five:target, #box-six:target { z-index: 2; }
+#box-account: { z-index: 1 }
+#box-account:target .tabs, #box-smartbanner:target .tabs { z-index: 3; }
+#box-smartbanner:target { z-index: 2; }
 .cur-nav-fix .tabs li.cur a { border-bottom: 1px solid white; background: white; }
-
-.geenapp_tab_contact {position: relative !important;border:0 !important;}
-#geenapp_register {width:200px;border:0;}
-#geenapp_signin {width:200px;left:400px;border:0;}
-#geenapp_banner {border:0px;width:400px;}
+.geenapp_tab_contact { position: relative !important; border:0 !important; }
+#geenapp_register { width: 50%; border: 0; }
+#geenapp_signin { width: 50%; border: 0; }
+#geenapp_banner { border: 0; width: 400px; }
