@@ -30,13 +30,13 @@ Get best conversions with this plugin, increasing your profits with the same tra
 == Changelog ==
 
 = 0.3 =
- Minor updates
- Screenshots
- Uninstall deletes data
- Translations
+- Minor updates
+- Screenshots
+- Uninstall deletes data
+- Translations
 
 = 0.2 =
- Minor updates
+- Minor updates
  
 = 0.1 =
- First stable version
+- First stable version
