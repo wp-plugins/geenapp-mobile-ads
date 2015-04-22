@@ -3,13 +3,23 @@ Contributors: JavierCasares, artsiavi
 Tags: ads, mobile, monetization, smartbanner, android, ios
 Requires at least: 3.5
 Tested up to: 4.2
-Stable tag: 0.2
+Stable tag: 0.3
 
 Monetize your mobile traffic offering Apps to your visitors
 
 == Description ==
 
-Geenapp is App Promotion Platform where you can earn money with each App installation. Get best conversions with this plugin, increasing your profits with the same traffic. Geenapp have the best Apps offer worldwide.
+<a href="http://www.geenapp.com/">Geenapp</a> is an App Promotion Platform where you can earn money with each App installation.
+
+Get best conversions with this plugin, increasing your profits with the same traffic. Geenapp have the best Apps offer worldwide.
+
+**SmartBanner**: You can have at top or bottom of your page a banner to install an App. User can close this banner.
+
+== Screenshots ==
+
+1. API Key configuration
+2. SmartBanner configuration
+3. SmartBanner (Screen Top) example
 
 == Installation ==
 
@@ -18,6 +28,11 @@ Geenapp is App Promotion Platform where you can earn money with each App install
 3. Configure your `Geenapp API Key`, and where you want to see your ads.
 
 == Changelog ==
+
+= 0.3 =
+ Minor updates
+ Screenshots
+ Uninstall deletes data
 
 = 0.2 =
  Minor updates

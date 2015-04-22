@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/geenapp-mobile-ads/
 Description: Monetize your mobile traffic offering Apps to your visitors
 Author: Geenapp
 Author URI: http://www.geenapp.com/
-Version: 0.2
+Version: 0.3
 License: GPL
 */
 if(!defined('ABSPATH')) {
@@ -17,8 +17,7 @@ if(is_admin()) {
 }
 function geenapp_init() {
   global $plugin_dir;
-  $plugin_dir = basename(dirname(__FILE__));
-  load_plugin_textdomain('geenapp', false, $plugin_dir);
+  load_plugin_textdomain('geenapp', false, dirname(plugin_basename(__FILE__)).'/languages');
   if(('' != get_option('geenapp_token')) && wp_is_mobile()) {
     add_action('wp_head', 'geenapp_add_insert_head');
     add_action('wp_footer', 'geenapp_add_insert_footer');
@@ -45,7 +44,7 @@ function script_javascript() {
             $("#signin_messege").text(txt);
               break;
           case '1':
-            txt = '<?php echo __('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads Plugin.', 'geenapp'); ?>';
+            txt = '<?php echo __('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp'); ?>';
             $("#geenapp_signin").html(txt);
               break;
           default:
@@ -71,7 +70,7 @@ function geenapp_admin_init() {
 }
 function _geenapp_register() {
   echo '<div id="message" class="error">';
-  echo '  <p>'.__('Geenapp Wordpress Plugin <a href="admin.php?page=geenapp_post">needs your API Key</a>.', 'geenapp').'</p>';
+  echo '  <p>'.__('Geenapp Mobile Ads plugin <a href="admin.php?page=geenapp_post">needs your API Key</a>.', 'geenapp').'</p>';
   echo '</div>';
 }
 if(!function_exists('geenapp_menu')) {
@@ -106,16 +105,16 @@ if(!function_exists('geenapp_menu_admin')) {
         <h1>'.__('Configure your Geenapp API Key', 'geenapp').'</h1>
         <form method="post" action="admin-ajax.php">
           <input type="hidden" value="signin" name="action">
-          <p>'.__('API Key', 'geenapp').': <input autocomplete="off" name="geenapp_token" id="geenapp_token" type="text"></p>
+          <p>'.__('API Key', 'geenapp').': <input name="geenapp_token" id="geenapp_token" type="text"></p>
           <p><button type="button" class="button button-primary" id="signin">'.__('Verify', 'geenapp').'</button></p>
         </form>
-        <p>'.__('We need your API Key. Sign in at Geenapp to <a href="https://publisher.geenapp.com/apikey.php">retrieve your API Key</a> or sign up at Geenapp to <a href="https://publisher.geenapp.com/register.php?a=wordpress">create a new account</a>.', 'geenapp').'</p>
+        <p>'.__('We need your API Key. Sign in at Geenapp to <a href="https://publisher.geenapp.com/apikey.php" target="_blank">retrieve your API Key</a> or sign up at Geenapp to <a href="https://publisher.geenapp.com/register.php?a=wordpress" target="_blank">create a new account</a>.', 'geenapp').'</p>
         <div style="top: 250px; border: none;" id="signin_messege"></div>
       </div>';
     } else {
       echo '<div id="geenapp_signin">
         <h1>'.__('Your Geenapp API Key', 'geenapp').'</h1>
-        <p>'.__('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads Plugin.', 'geenapp').'</p>
+        <p>'.__('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp').'</p>
       </div>';
     }
 ?>

@@ -17,6 +17,6 @@
 #box-smartbanner:target { z-index: 2; }
 .cur-nav-fix .tabs li.cur a { border-bottom: 1px solid white; background: white; }
 .geenapp_tab_contact { position: relative !important; border:0 !important; }
-#geenapp_register { width: 50%; border: 0; }
-#geenapp_signin { width: 50%; border: 0; }
+#geenapp_register { border: 0; }
+#geenapp_signin { border: 0; }
 #geenapp_banner { border: 0; width: 400px; }
