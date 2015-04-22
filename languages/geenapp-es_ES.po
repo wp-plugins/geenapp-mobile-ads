@@ -1,0 +1,108 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Geenapp Mobile Ads\n"
+"POT-Creation-Date: 2015-04-22 10:36+0100\n"
+"PO-Revision-Date: 2015-04-22 10:41+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.6\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: geenapp-mobile-ads.php:44
+msgid "Wrong API Key. Please check your API Key."
+msgstr "API Key errónea. Por favor comprueba tu API Key."
+
+#: geenapp-mobile-ads.php:48 geenapp-mobile-ads.php:118
+msgid ""
+"Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads "
+"plugin."
+msgstr ""
+"Tu API Key es Correcta. Ya puedes empezar a configurar tu plugin Geenapp "
+"Anuncios Móviles."
+
+#: geenapp-mobile-ads.php:52
+msgid "Something went wrong. Please try again."
+msgstr "Algo ha fallado. Por favor, prueba de nuevo."
+
+#: geenapp-mobile-ads.php:74
+msgid ""
+"Geenapp Mobile Ads plugin <a href=\"admin.php?page=geenapp_post\">needs your "
+"API Key</a>."
+msgstr ""
+"El plugin Geenapp Anuncios Móviles <a href=\"admin.php?page=geenapp_post"
+"\">necesita su clave de API</a> ."
+
+#: geenapp-mobile-ads.php:79
+msgid "Geenapp Mobile Ads"
+msgstr "Geenapp Anuncios Móviles"
+
+#: geenapp-mobile-ads.php:80
+msgid "Mobile Ads"
+msgstr "Anuncios Móviles"
+
+#: geenapp-mobile-ads.php:106
+msgid "Configure your Geenapp API Key"
+msgstr "Configura tu Geenapp API Key"
+
+#: geenapp-mobile-ads.php:109
+msgid "API Key"
+msgstr "API Key"
+
+#: geenapp-mobile-ads.php:110
+msgid "Verify"
+msgstr "Verificar"
+
+#: geenapp-mobile-ads.php:112
+msgid ""
+"We need your API Key. Sign in at Geenapp to <a href=\"https://publisher."
+"geenapp.com/apikey.php\">retrieve your API Key</a> or sign up at Geenapp to "
+"<a href=\"https://publisher.geenapp.com/register.php?a=wordpress\">create a "
+"new account</a>."
+msgstr ""
+"Necesitamos tu API Key. Entra en Geenapp para <a href=\"https://publisher."
+"geenapp.com/apikey.php\">recuperar tu API Key</a> o date de alta en Geenapp "
+"y <a href=\"https://publisher.geenapp.com/register.php?a=wordpress\">crea "
+"una nueva cuenta</a>."
+
+#: geenapp-mobile-ads.php:117
+msgid "Your Geenapp API Key"
+msgstr "Tu Geenapp API Key"
+
+#: geenapp-mobile-ads.php:124 geenapp-mobile-ads.php:146
+msgid "Account"
+msgstr "Cuenta"
+
+#: geenapp-mobile-ads.php:125 geenapp-mobile-ads.php:147
+msgid "SmartBanner"
+msgstr "SmartBanner"
+
+#: geenapp-mobile-ads.php:130
+msgid "SmartBanner settings"
+msgstr "Configuración de SmartBanner"
+
+#: geenapp-mobile-ads.php:137
+msgid "Active"
+msgstr "Activo"
+
+#: geenapp-mobile-ads.php:138
+msgid "Position"
+msgstr "Posición"
+
+#: geenapp-mobile-ads.php:139
+msgid "Screen Top"
+msgstr "Pantalla Arriba"
+
+#: geenapp-mobile-ads.php:140
+msgid "Screen Bottom"
+msgstr "Pantalla Abajo"
