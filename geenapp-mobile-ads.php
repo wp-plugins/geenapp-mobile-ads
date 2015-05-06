@@ -81,6 +81,7 @@ if(!function_exists('geenapp_menu')) {
     $menu_slug  = 'geenapp_post';
     $function   = 'geenapp_menu_admin'; 
     $icon_url   = plugin_dir_url(__FILE__).'img/geenapp.png';
+    $position = 8;
     add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
     add_action('admin_init', 'update_geenapp_publisher_info');
   }
