@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/geenapp-mobile-ads/
 Description: Monetize your mobile traffic offering Apps to your visitors
 Author: Geenapp
 Author URI: http://www.geenapp.com/
-Version: 0.3
+Version: 0.3.1
 License: GPL
 */
 if(!defined('ABSPATH')) {
