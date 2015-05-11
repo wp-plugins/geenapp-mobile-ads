@@ -1,0 +1,122 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Geenapp Mobile Ads\n"
+"POT-Creation-Date: 2015-05-11 18:18+0100\n"
+"PO-Revision-Date: 2015-05-11 18:18+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: geenapp-mobile-ads.php:65
+msgid ""
+"Geenapp Mobile Ads plugin <a href=\"admin.php?page=geenapp_post\">needs your "
+"API Key</a>."
+msgstr ""
+"рекламный плагин Geenapp Mobile <a href=\"admin.php?page=geenapp_post"
+"\">нужен ваш API код</a>."
+
+#: geenapp-mobile-ads.php:70 geenapp-mobile-ads.php:91
+msgid "Geenapp Mobile Ads"
+msgstr "Geenapp Мобильные рекламы"
+
+#: geenapp-mobile-ads.php:71
+msgid "Mobile Ads"
+msgstr "Мобильные рекламы"
+
+#: geenapp-mobile-ads.php:92
+msgid "Configure your Geenapp API Key"
+msgstr "Настройте свой Geenapp API код"
+
+#: geenapp-mobile-ads.php:96 geenapp-mobile-ads.php:264
+msgid ""
+"Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads "
+"plugin."
+msgstr ""
+"Ваш API код подходит. Теперь вы можете начать настраивать свой Geenapp "
+"Mobile рекламный плагин."
+
+#: geenapp-mobile-ads.php:107
+msgid "API Key"
+msgstr "API код"
+
+#: geenapp-mobile-ads.php:114
+msgid ""
+"We need your API Key. Sign in at Geenapp to <a href=\"https://publisher."
+"geenapp.com/apikey.php\" target=\"_blank\">retrieve your API Key</a> or sign "
+"up at Geenapp to <a href=\"https://publisher.geenapp.com/register.php?"
+"a=wordpress\" target=\"_blank\">create a new account</a>."
+msgstr ""
+"Нам нужен ваш API код. Войдите в Geenapp <a href=\"https://publisher.geenapp."
+"com/apikey.php\" target=\"_blank\">Получить ключ API</a> или Войти в Geenapp "
+"<a href=\"https://publisher.geenapp.com/register.php?a=wordpress\" target="
+"\"_blank\"> создать новый аккаунт</a>."
+
+#: geenapp-mobile-ads.php:119
+msgid "SmartBanner settings"
+msgstr ""
+
+#: geenapp-mobile-ads.php:123 geenapp-mobile-ads.php:141
+msgid "Active"
+msgstr "активный"
+
+#: geenapp-mobile-ads.php:127
+msgid "Position"
+msgstr "Положение"
+
+#: geenapp-mobile-ads.php:129
+msgid "Screen Top"
+msgstr "Главный Экран"
+
+#: geenapp-mobile-ads.php:130
+msgid "Screen Bottom"
+msgstr "Главная кнопка"
+
+#: geenapp-mobile-ads.php:134
+msgid "Interstitial settings"
+msgstr ""
+
+#: geenapp-mobile-ads.php:145
+msgid "Daily frequency"
+msgstr ""
+
+#: geenapp-mobile-ads.php:155
+msgid ""
+"Require use of user browser cookie. Daily frequency is the maximum "
+"impressions every 24 hours."
+msgstr ""
+
+#: geenapp-mobile-ads.php:267
+msgid "Wrong API Key. Please check your API Key."
+msgstr "Неправильный API код. Пожалуйста проверьтесвой API код."
+
+#: geenapp-mobile-ads.php:318
+msgid "The settings have been saved"
+msgstr ""
+
+#~ msgid "Something went wrong. Please try again."
+#~ msgstr "Произошла ошибка. Попробуйте пожалуйста заново"
+
+#~ msgid "Verify"
+#~ msgstr "Подтвердите"
+
+#~ msgid "Your Geenapp API Key"
+#~ msgstr "Ваш Geenapp API код"
+
+#~ msgid "Account"
+#~ msgstr "Счет"
+
+#~ msgid "SmartBanner"
+#~ msgstr "Умный Баннер"
