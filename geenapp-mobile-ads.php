@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/geenapp-mobile-ads/
 Description: Monetize your mobile traffic offering Apps to your visitors
 Author: Geenapp
 Author URI: http://www.geenapp.com/
-Version: 0.3
+Version: 0.4
 License: GPL
 */
 if(!defined('ABSPATH')) {
@@ -19,59 +19,51 @@ function geenapp_init() {
   global $plugin_dir;
   load_plugin_textdomain('geenapp', false, dirname(plugin_basename(__FILE__)).'/languages');
   if(('' != get_option('geenapp_token')) && wp_is_mobile()) {
+    $domain_name = $_SERVER['HTTP_HOST'];
     add_action('wp_head', 'geenapp_add_insert_head');
     add_action('wp_footer', 'geenapp_add_insert_footer');
+    if ('on' == get_option('geenapp_interstitial_active')) {
+      $bol_show_ad = false;
+      if(isset($_COOKIE['geenapp_interstitial']) && $_COOKIE['geenapp_interstitial']) {
+        $geenapp_interstitial = intval($_COOKIE['geenapp_interstitial']);
+      } else {
+			  $geenapp_interstitial = 0;
+		  }
+      if(!$geenapp_interstitial) {
+        setcookie('geenapp_interstitial', 1, time() + 86400);
+        $bol_show_ad = true;
+      } elseif($geenapp_interstitial <= intval(get_option('geenapp_interstitial_frec_visit'))) {
+        $geenapp_interstitial++;
+        setcookie('geenapp_interstitial', $geenapp_interstitial, time() + 86400);
+        $bol_show_ad = true;  
+		  }
+		  if($bol_show_ad) {
+        add_action('wp_footer', 'geenapp_add_interstitial');
+        add_action('wp_enqueue_scripts', 'theme_name_scripts');
+		  }
+    }
   }
 }
-add_action('plugins_loaded', 'geenapp_init');
-add_action('admin_footer', 'script_javascript');
-add_action('wp_ajax_signin', 'signin_callback');
-function script_javascript() {
-?>
-<script type="text/javascript">
-  jQuery(document).ready(function($) {
-    $("#signin").click(function() {
-      var apikey = $("#geenapp_token").val();
-      var data = {
-        'action': 'signin',
-        'apikey': apikey
-      };
-      $.post(ajaxurl, data, function(response) {
-        var txt;
-        switch(response) {
-          case '0':
-            txt = '<?php echo __('Wrong API Key. Please check your API Key.', 'geenapp'); ?>';
-            $("#signin_messege").text(txt);
-              break;
-          case '1':
-            txt = '<?php echo __('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp'); ?>';
-            $("#geenapp_signin").html(txt);
-              break;
-          default:
-            txt = '<?php echo __('Something went wrong. Please try again.', 'geenapp'); ?>';
-            $("#signin_messege").text(txt);
-        }
-      });
-    });
-  });
-</script>
-<?php
+function theme_name_scripts() {
+  wp_register_script('geenappScript', plugin_dir_url(__FILE__).'geenapp_js.js', false);
+  wp_enqueue_script('geenappScript'); 
+  wp_register_style('geenappInter', plugin_dir_url(__FILE__).'geenapp_popup.css');
+  wp_enqueue_style('geenappInter');
 }
 function geenapp_admin_init() {
   wp_register_style('geenapp_admin_css', plugin_dir_url(__FILE__).'geenapp-mobile-ads.css');
   wp_enqueue_style('geenapp_admin_css');
-  update_option('geenapp_submit_tab', 'reg');
-  if(get_option('geenapp_token') == '') {
+  if('' == get_option('geenapp_token')) {
     add_action('admin_notices', '_geenapp_register');
   }
   add_action('admin_post_reg', 'prefix_admin_reg');
-  add_action('admin_post_signin', 'prefix_admin_signin');
-  add_action('admin_post_signout', 'prefix_admin_signout');
+  add_settings_field('geenapp-publisher-info-settings', 'geenapp-publisher-info-settings', 'update_message_callback', 'geenapp_post');
+  register_setting('geenapp-publisher-info-settings', 'geenapp_token', 'sanitize_option_geenapp_token');
 }
 function _geenapp_register() {
   echo '<div id="message" class="error">';
   echo '  <p>'.__('Geenapp Mobile Ads plugin <a href="admin.php?page=geenapp_post">needs your API Key</a>.', 'geenapp').'</p>';
-  echo '</div>';
+  echo '</div>'; 
 }
 if(!function_exists('geenapp_menu')) {
   function geenapp_menu() {
@@ -81,8 +73,7 @@ if(!function_exists('geenapp_menu')) {
     $menu_slug  = 'geenapp_post';
     $function   = 'geenapp_menu_admin'; 
     $icon_url   = plugin_dir_url(__FILE__).'img/geenapp.png';
-    $position = 8;
-    add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
+    add_options_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url);
     add_action('admin_init', 'update_geenapp_publisher_info');
   }
 }
@@ -90,64 +81,80 @@ if(!function_exists('update_geenapp_publisher_info')) {
   function update_geenapp_publisher_info() {
     register_setting('geenapp-publisher-info-settings', 'geenapp_faldon_active');
     register_setting('geenapp-publisher-info-settings', 'geenapp_faldon_position');
-    register_setting('geenapp-publisher-info-settings', 'geenapp_submit_tab');
+    register_setting('geenapp-publisher-info-settings', 'geenapp_interstitial_active');
+    register_setting('geenapp-publisher-info-settings', 'geenapp_interstitial_frec_visit',  'update_message_callback');
   }
 }
 if(!function_exists('geenapp_menu_admin')) {
   function geenapp_menu_admin() {
 ?>
-  <div class="tabbed-area cur-nav-fix">
-    <div class="box-wrap">
-      <div id="box-account" class="tab-content"<?php if('reg' == get_option('geenapp_submit_tab')) echo ' style="z-index: 1;"'; ?>>
-        <div class="geenapp_tab_contact">
+<h1><?php echo __('Geenapp Mobile Ads', 'geenapp'); ?></h1>
+<h2><?php echo __('Configure your Geenapp API Key', 'geenapp'); ?></h2>
 <?php
-    if ('' == get_option('geenapp_token')) {
-      echo '<div id="geenapp_signin">
-        <h1>'.__('Configure your Geenapp API Key', 'geenapp').'</h1>
-        <form method="post" action="admin-ajax.php">
-          <input type="hidden" value="signin" name="action">
-          <p>'.__('API Key', 'geenapp').': <input name="geenapp_token" id="geenapp_token" type="text"></p>
-          <p><button type="button" class="button button-primary" id="signin">'.__('Verify', 'geenapp').'</button></p>
-        </form>
-        <p>'.__('We need your API Key. Sign in at Geenapp to <a href="https://publisher.geenapp.com/apikey.php" target="_blank">retrieve your API Key</a> or sign up at Geenapp to <a href="https://publisher.geenapp.com/register.php?a=wordpress" target="_blank">create a new account</a>.', 'geenapp').'</p>
-        <div style="top: 250px; border: none;" id="signin_messege"></div>
-      </div>';
-    } else {
-      echo '<div id="geenapp_signin">
-        <h1>'.__('Your Geenapp API Key', 'geenapp').'</h1>
-        <p>'.__('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp').'</p>
-      </div>';
+    if(get_option('geenapp_token')) {
+?>
+<p class="description"><?php echo __('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp'); ?></p>
+<?php
     }
 ?>
-        </div>
-        <ul class="tabs group">
-          <li class="cur"><a href="#box-account"><?php echo __('Account', 'geenapp'); ?></a></li>
-          <li><a href="#box-smartbanner"><?php echo __('SmartBanner', 'geenapp'); ?></a></li>
-        </ul>
-      </div>
-      <div id="box-smartbanner" class="tab-content"<?php if('fal' == get_option('geenapp_submit_tab')) echo ' style="z-index: 1;"'; ?>>
-        <div class="geenapp_tab_contact">
-          <h1><?php echo __('SmartBanner settings', 'geenapp'); ?></h1>
-          <form method="post" action="options.php">
-            <input type="hidden" value="fal" id="geenapp_submit_tab" name="geenapp_submit_tab">
+<form method="post" action="options.php">
+<?php
+   settings_fields('geenapp-publisher-info-settings');
+    do_settings_sections('geenapp-publisher-info-settings');
+?>
+  <table class="form-table">
+    <tr>
+      <th scope="row"><label for="geenapp_token"><?php echo __('API Key', 'geenapp'); ?></label></th>
+      <td><input name="geenapp_token" type="text" id="geenapp_token" class="regular-text" value="<?php echo get_option('geenapp_token'); ?>"></td>
+    </tr>
+  </table>
+  <p class="description">
+<?php 
+    if('' == get_option('geenapp_token')) {
+      echo __('We need your API Key. Sign in at Geenapp to <a href="https://publisher.geenapp.com/apikey.php" target="_blank">retrieve your API Key</a> or sign up at Geenapp to <a href="https://publisher.geenapp.com/register.php?a=wordpress" target="_blank">create a new account</a>.', 'geenapp');
+    }
+?>
+  </p>
+  <div style="top: 250px; border: none;" id="signin_messege"></div>
+  <h2><?php echo __('SmartBanner settings', 'geenapp'); ?></h2>
+ 
+  <table class="form-table">
+    <tr>
+      <th scope="row"><label for="geenapp_faldon_active"><?php echo __('Active', 'geenapp'); ?></label></th>
+      <td><input type="checkbox" name="geenapp_faldon_active"<?php if('on' == get_option('geenapp_faldon_active')) echo ' checked'; ?>></td>
+    </tr>
+    <tr>
+      <th scope="row"><label for="geenapp_faldon_position"><?php echo __('Position', 'geenapp'); ?></label></th>
+      <td><select name="geenapp_faldon_position" id="geenapp_faldon_position">
+        <option value="top"<?php if('top' == get_option('geenapp_faldon_position')) echo ' selected'; ?>><?php echo __('Screen Top', 'geenapp'); ?></option>
+        <option value="bottom"<?php if('bottom' == get_option('geenapp_faldon_position')) echo ' selected'; ?>><?php echo __('Screen Bottom', 'geenapp'); ?></option>
+      </select></td>
+    </tr>
+  </table>
+  <h2><?php echo __('Interstitial settings', 'geenapp'); ?></h2>
 <?php
     settings_fields('geenapp-publisher-info-settings');
     do_settings_sections('geenapp-publisher-info-settings');
 ?>
-            <p><?php echo __('Active', 'geenapp'); ?>: <input type="checkbox" name="geenapp_faldon_active"<?php if('on' == get_option('geenapp_faldon_active')) echo ' checked'; ?>></p>
-            <p><?php echo __('Position', 'geenapp'); ?>: <select name="geenapp_faldon_position" id="geenapp_faldon_position">
-              <option value="top"<?php if('top' == get_option('geenapp_faldon_position')) echo ' selected'; ?>><?php echo __('Screen Top', 'geenapp'); ?></option>
-              <option value="bottom"<?php if('bottom' == get_option('geenapp_faldon_position')) echo ' selected'; ?>><?php echo __('Screen Bottom', 'geenapp'); ?></option>
-            </select></p>
-            <p><?php submit_button(); ?></p>
-          </form>
-        </div>
-        <ul class="tabs group">
-          <li><a href="#box-account"><?php echo __('Account', 'geenapp'); ?></a></li>
-          <li class="cur"><a href="#box-smartbanner"><?php echo __('SmartBanner', 'geenapp'); ?></a></li>
-        </ul>
-      </div>
-    </div>
+  <table class="form-table">
+    <tr>
+      <th scope="row"><label for="geenapp_interstitial_active"><?php echo __('Active', 'geenapp'); ?></label></th>
+      <td><input type="checkbox" name="geenapp_interstitial_active"<?php if('on' == get_option('geenapp_interstitial_active')) echo ' checked'; ?>></td>
+    </tr>
+    <tr>
+      <th scope="row"><label for="geenapp_interstitial_frec_visit"><?php echo __('Daily frequency', 'geenapp') ?></label></th>
+      <td><select name="geenapp_interstitial_frec_visit" id="geenapp_interstitial_frec_visit">
+        <option value="1"<?php if('1' == get_option('geenapp_interstitial_frec_visit')) echo ' selected'; ?>>1</option>
+        <option value="2"<?php if('2' == get_option('geenapp_interstitial_frec_visit')) echo ' selected'; ?>>2</option>
+        <option value="3"<?php if('3' == get_option('geenapp_interstitial_frec_visit')) echo ' selected'; ?>>3</option>
+        <option value="4"<?php if('4' == get_option('geenapp_interstitial_frec_visit')) echo ' selected'; ?>>4</option>
+        <option value="5"<?php if('5' == get_option('geenapp_interstitial_frec_visit')) echo ' selected'; ?>>5</option>
+      </select></td>
+    </tr>
+  </table>
+  <p class="description"><?php echo __('Require use of user browser cookie. Daily frequency is the maximum impressions every 24 hours.', 'geenapp'); ?></p>
+  <p class="submit"><?php submit_button(); ?></p>
+</form>
 <?php
   }
 }
@@ -191,31 +198,76 @@ function geenapp_add_insert_head() {
     }
 	}
 }
-function get_faldon_ad_url() {
+function geenapp_add_interstitial() {
+  $adUrls = get_interstitial_ad_url();
+  if(isset($adUrls['imageUrl']) && $adUrls['imageUrl'] != '') {
+    echo '<div id="geenapp_fullscreen">
+  <div id="ad">
+    <div onclick="document.getElementById(\'ad\').style.display=\'none\';" style="display: inline; position: relative; float: right; top: -5px;">
+      <img height="20" width="20" src="'.plugin_dir_url(__FILE__).'img/closer.png">
+    </div>
+    <img usemap="#interstitial" src="'.$adUrls['imageUrl'].'">
+  </div>
+</div>
+<map name="interstitial">
+  <area shape="rect" coords="0,0,300,250" alt="geenapp" href="'.$adUrls['clickUrl'].'">
+</map>';
+  }
+}
+function get_interstitial_ad_url() {
   $apiUrl = 'http://wordpress.geenapptool.com/json.php';
-  global $current_site;
   $var['apikey']          = get_option('geenapp_token');
   $var['ip']              = get_the_user_ip();
   $var['device']          = get_device();
-  $var['gee_source']      = $current_site;
+  $var['gee_source']      = $_SERVER['HTTP_HOST'];
   $var['lang']            = substr(get_bloginfo('language'), 0, 2);
-  $url = $apiUrl.'?apikey='.$var['apikey'].'&ip='.$var['ip'].'&device='.$var['device'].'&gee_source='.$var['gee_source'].'&lang='.$var['lang'];
-  $json_offers            = get_json($url);	
-  $offers                 = json_decode($json_offers, true);
-  $offers                 = $offers['content'];
+  $longIp                 = ip2long($var['ip']);
+  $key                    = $longIp.'-'.$var['device'];
+  if(false === ($value = get_transient($key))) {
+	  $url = $apiUrl.'?apikey='.$var['apikey'].'&ip='.$var['ip'].'&device='.$var['device'].'&gee_source='.$var['gee_source'].'&lang='.$var['lang'].'&gee_tool=wordpress';
+	  $json_offers            = get_json($url);
+	  $offers                 = json_decode($json_offers, true);
+	  $offers                 = $offers['content'];
+	  set_transient($key, $offers, 24 * HOUR_IN_SECONDS);
+  } else {
+	  $offers = get_transient($key);
+  }
+  $offer                  = $offers[array_rand($offers , 1)];
+  return array('clickUrl' => $offer['url'], 'imageUrl' => $offer['ads']['ad300x250']);
+}
+function get_faldon_ad_url() {
+  $apiUrl = 'http://wordpress.geenapptool.com/json.php';
+  $var['apikey']          = get_option('geenapp_token');
+  $var['ip']              = get_the_user_ip();
+  $var['device']          = get_device();
+  $var['gee_source']      = $_SERVER['HTTP_HOST'];
+  $var['lang']            = substr(get_bloginfo('language'), 0, 2);
+  $longIp                 = ip2long($var['ip']);
+  $key                    = $longIp.'-'.$var['device'];
+  if(false === ($value = get_transient($key))) {
+    $url = $apiUrl.'?apikey='.$var['apikey'].'&ip='.$var['ip'].'&device='.$var['device'].'&gee_source='.$var['gee_source'].'&lang='.$var['lang'].'&gee_tool=wordpress';
+	  $json_offers            = get_json($url);
+	  $offers                 = json_decode($json_offers, true);
+    $offers                 = $offers['content'];
+	  set_transient($key, $offers, 24 * HOUR_IN_SECONDS);
+  } else {
+	  $offers = get_transient($key);
+  }
   $offer                  = $offers[array_rand($offers , 1)];
   return array('clickUrl' => $offer['url'], 'imageUrl' => $offer['ads']['ad320x50']);
 }
-function signin_callback() {
-  global $wpdb;
+function sanitize_option_geenapp_token($value) {
   $url = 'http://wordpress.geenapptool.com/verifiuser.php';
-  $var['apikey'] = $_REQUEST['apikey'];
+  $var['apikey'] = sanitize_text_field($value);
   $res = send_request($url, $var);
-  echo $res->verified;
   if($res->verified > 0) {
-    update_option('geenapp_token', sanitize_text_field($res->apikey));
+    add_settings_error('geenapp', 'geenapp',  __('Your API Key is OK. Now you can start setting up your Geenapp Mobile Ads plugin.', 'geenapp'), 'updated');
+    return sanitize_text_field($res->apikey);
+  } else {
+    add_settings_error('geenapp', 'geenapp',  __('Wrong API Key. Please check your API Key.', 'geenapp'), 'error');
+    $res = null;
+    return $res;
   }
-  wp_die();
 }
 function get_device() {
   if(stripos($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
@@ -228,6 +280,8 @@ function get_device() {
 	  $device = 'android';
 	} elseif(stripos($_SERVER['HTTP_USER_AGENT'], 'windows phone')) {
 	  $device = 'windows';
+	} elseif(stripos($_SERVER['HTTP_USER_AGENT'], 'BB10')) {
+	  $device = 'blackberry';
 	} else {
 	  $device = 'none';
 	}
@@ -260,4 +314,9 @@ function send_request($url, $params, $return_json = false) {
 	curl_close($ch);
 	return $return_json ? json_encode(json_decode($r)) : json_decode($r);
 }
+function update_message_callback($value) {
+  add_settings_error('geenapp', 'geenapp', __( 'The settings have been saved', 'geenapp'), 'updated');
+  return $value;
+}
+add_action('plugins_loaded', 'geenapp_init');
 ?>
