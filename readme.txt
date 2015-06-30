@@ -3,7 +3,7 @@ Contributors: JavierCasares, artsiavi
 Tags: ads, mobile, monetization, smartbanner, android, ios
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 0.4
+Stable tag: 0.5
 
 Monetize your mobile traffic offering Apps to your visitors
 
@@ -30,6 +30,9 @@ Get best conversions with this plugin, increasing your profits with the same tra
 3. Add your `Geenapp API Key` and configure where you want to see your ads.
 
 == Changelog ==
+
+= 0.5 = 
+- New responsive smart banner
 
 = 0.4 =
 - New admin panel
