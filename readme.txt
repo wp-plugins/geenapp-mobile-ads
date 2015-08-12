@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: JavierCasares, artsiavi, Carles Mateo
+Contributors: JavierCasares, carles_mateo
 Tags: ads, mobile, monetization, smartbanner, android, ios
 Requires at least: 3.5
 Tested up to: 4.3
